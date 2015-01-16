@@ -16,8 +16,8 @@
 
 #define arm1_length_checksum         CHECKSUM("arm1_length")
 #define arm2_length_checksum         CHECKSUM("arm2_length")
-#define base_offset_x_checksum       CHECKSUM("base_offset_x")
-#define base_offset_y_checksum       CHECKSUM("base_offset_y")
+#define tower_offset_x_checksum       CHECKSUM("tower_offset_x")
+#define tower_offset_y_checksum       CHECKSUM("tower_offset_y")
 #define axis_scaling_x_checksum      CHECKSUM("axis_scaling_x")
 #define axis_scaling_y_checksum      CHECKSUM("axis_scaling_y")
 #define polar_homing_checksum        CHECKSUM("polar_homing")
@@ -32,10 +32,10 @@ SeriesPolarSolution::SeriesPolarSolution(Config* config)
     arm1_length         = config->value(arm1_length_checksum)->by_default(150.0f)->as_number();
     // arm2_length is the length of the forearm main arm from hinge to hinge
     arm2_length         = config->value(arm2_length_checksum)->by_default(150.0f)->as_number();
-    // base_offset_x is the x offset of bed zero position towards the SCARA tower center
-    base_offset_x     = config->value(base_offset_x_checksum)->by_default(100.0f)->as_number();
-    // base_offset_y is the y offset of bed zero position towards the SCARA tower center
-    base_offset_y     = config->value(base_offset_y_checksum)->by_default(-65.0f)->as_number();
+    // tower_offset_x is the x offset of bed zero position towards the SCARA tower center
+    tower_offset_x     = config->value(tower_offset_x_checksum)->by_default(100.0f)->as_number();
+    // tower_offset_y is the y offset of bed zero position towards the SCARA tower center
+    tower_offset_y     = config->value(tower_offset_y_checksum)->by_default(-65.0f)->as_number();
 
     init();
 }
@@ -72,11 +72,11 @@ bool SeriesPolarSolution::set_optional(const arm_options_t& options) {
     }
     i= options.find('X');          // Home initial position X
     if(i != options.end()) {
-        base_offset_x= i->second;
+        tower_offset_x= i->second;
     }
     i= options.find('Y');          // Home initial position Y
     if(i != options.end()) {
-        base_offset_y= i->second;
+        tower_offset_y= i->second;
     }
     
     init();
@@ -86,7 +86,7 @@ bool SeriesPolarSolution::set_optional(const arm_options_t& options) {
 bool SeriesPolarSolution::get_optional(arm_options_t& options) {
     options['T']= this->arm1_length;
     options['P']= this->arm2_length;
-    options['X']= this->base_offset_x;
-    options['Y']= this->base_offset_y;
+    options['X']= this->tower_offset_x;
+    options['Y']= this->tower_offset_y;
     return true;
 };
