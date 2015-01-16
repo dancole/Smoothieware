@@ -50,11 +50,20 @@ float SeriesPolarSolution::to_degrees(float radians) {
 
 void SeriesPolarSolution::cartesian_to_actuator( float cartesian_mm[], float actuator_mm[] )
 {
-
+    // x = arm1_length*cos(S) + arm2_length*cos(S+E)
+    // y = arm1_length*sin(S) + arm2_length*sin(S+E)
+    // r = S + E + W
+    // where S is the upperarm (Shoulder) angle, E is the forearm (Elbow) angle, and W is the tool (Wrist) angle
+    // E = cos^-1((SQ(x)+SQ(y)-SQ(arm1_length)-SQ(arm2_length))/(2*arm1_length*arm2_length))
+    // S = tan^-1(y/x)-((SQ(x)+SQ(y)+SQ(arm1_length)-SQ(arm2_length))/(2*arm1_length*SQRT(SQ(x)+SQ(y))))
+    // W = r - E - S
 }
 
 void SeriesPolarSolution::actuator_to_cartesian( float actuator_mm[], float cartesian_mm[] ) {
-
+    // x = arm1_length*cos(S) + arm2_length*cos(S+E)
+    // y = arm1_length*sin(S) + arm2_length*sin(S+E)
+    // r = S + E + W
+    // where S is the upperarm (Shoulder) angle, E is the forearm (Elbow) angle, and W is the tool (Wrist) angle
 }
 
 bool SeriesPolarSolution::set_optional(const arm_options_t& options) {
