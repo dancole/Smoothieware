@@ -29,6 +29,7 @@ using std::string;
 #include "arm_solutions/LinearDeltaSolution.h"
 #include "arm_solutions/HBotSolution.h"
 #include "arm_solutions/MorganSCARASolution.h"
+#include "arm_solutions/SeriesPolarSolution.h"
 #include "StepTicker.h"
 #include "checksumm.h"
 #include "utils.h"
