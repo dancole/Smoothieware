@@ -1,0 +1,13 @@
+#include "SeriesPolarSolution.h"
+#include <fastmath.h>
+#include "checksumm.h"
+#include "ConfigValue.h"
+#include "libs/Kernel.h"
+//#include "StreamOutputPool.h"
+//#include "Gcode.h"
+//#include "SerialMessage.h"
+//#include "Conveyor.h"
+//#include "Robot.h"
+//#include "StepperMotor.h"
+#include "libs/nuts_bolts.h"
+#include "libs/Config.h"
