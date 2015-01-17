@@ -58,6 +58,7 @@ using std::string;
 #define  corexy_checksum                     CHECKSUM("corexy")
 #define  kossel_checksum                     CHECKSUM("kossel")
 #define  morgan_checksum                     CHECKSUM("morgan")
+#define  series_polar_checksum               CHECKSUM("series_polar")
 
 // stepper motor stuff
 #define  alpha_step_pin_checksum             CHECKSUM("alpha_step_pin")
@@ -166,6 +167,9 @@ void Robot::on_config_reload(void *argument)
 
     } else if(solution_checksum == morgan_checksum) {
         this->arm_solution = new MorganSCARASolution(THEKERNEL->config);
+
+    } else if(solution_checksum == series_polar_checksum) {
+        this->arm_solution = new SeriesPolarSolution(THEKERNEL->config);
 
     } else if(solution_checksum == cartesian_checksum) {
         this->arm_solution = new CartesianSolution(THEKERNEL->config);
