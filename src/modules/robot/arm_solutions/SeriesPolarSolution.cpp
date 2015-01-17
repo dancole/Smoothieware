@@ -54,9 +54,37 @@ void SeriesPolarSolution::cartesian_to_actuator( float cartesian_mm[], float act
     // y = arm1_length*sin(S) + arm2_length*sin(S+E)
     // r = S + E + W
     // where S is the upperarm (Shoulder) angle, E is the forearm (Elbow) angle, and W is the tool (Wrist) angle
-    // E = cos^-1((SQ(x)+SQ(y)-SQ(arm1_length)-SQ(arm2_length))/(2*arm1_length*arm2_length))
-    // S = tan^-1(y/x)-((SQ(x)+SQ(y)+SQ(arm1_length)-SQ(arm2_length))/(2*arm1_length*SQRT(SQ(x)+SQ(y))))
-    // W = r - E - S
+
+
+    float x,
+          y,
+          shoulder,
+          elbow,
+          wrist,
+          hsq,
+          sn,
+          sd,
+          en,
+          ed;
+
+    x = cartesian_mm[X_AXIS] - this->tower_offset_x;
+    y = cartesian_mm[Y_AXIS] - this->tower_offset_y;
+
+    hsq = SQ(x) + SQ(y);
+    sn = hsq + SQ(this->arm1_length) - SQ(this->arm2_length);
+    sd = 2 * this->arm1_length * sqrtf( hsq );
+    shoulder =  atan2f(y,x) - acosf(sn/sd);
+
+    en = hsq - SQ(this->arm1_length) - SQ(this->arm2_length);
+    ed = 2 * this->arm1_length * this->arm2_length;
+    elbow = acosf(en/ed);
+
+    wrist = cartesian_mm[E0_AXIS] - elbow - shoulder;
+
+    actuator_mm[ALPHA_STEPPER] = to_degrees(shoulder);
+    actuator_mm[BETA_STEPPER ] = to_degrees(elbow);
+    actuator_mm[GAMMA_STEPPER] = cartesian_mm[Z_AXIS];
+    actuator_mm[DELTA_STEPPER] = to_degrees(wrist);
 }
 
 void SeriesPolarSolution::actuator_to_cartesian( float actuator_mm[], float cartesian_mm[] ) {
@@ -64,6 +92,11 @@ void SeriesPolarSolution::actuator_to_cartesian( float actuator_mm[], float cart
     // y = arm1_length*sin(S) + arm2_length*sin(S+E)
     // r = S + E + W
     // where S is the upperarm (Shoulder) angle, E is the forearm (Elbow) angle, and W is the tool (Wrist) angle
+
+    cartesian_mm[X_AXIS] = this->arm1_length * cosf(actuator_mm[ALPHA_STEPPER]) + this->arm2_length * cosf(actuator_mm[ALPHA_STEPPER] + actuator_mm[BETA_STEPPER]);
+    cartesian_mm[Y_AXIS] = this->arm1_length * sinf(actuator_mm[ALPHA_STEPPER]) + this->arm2_length * sinf(actuator_mm[ALPHA_STEPPER] + actuator_mm[BETA_STEPPER]);
+    cartesian_mm[Z_AXIS] = actuator_mm[GAMMA_STEPPER];
+    cartesian_mm[E0_AXIS] = actuator_mm[ALPHA_STEPPER] + actuator_mm[BETA_STEPPER] + actuator_mm[DELTA_STEPPER];
 }
 
 bool SeriesPolarSolution::set_optional(const arm_options_t& options) {
