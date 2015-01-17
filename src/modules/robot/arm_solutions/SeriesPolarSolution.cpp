@@ -16,8 +16,8 @@
 
 #define arm1_length_checksum         CHECKSUM("arm1_length")
 #define arm2_length_checksum         CHECKSUM("arm2_length")
-#define tower_offset_x_checksum       CHECKSUM("tower_offset_x")
-#define tower_offset_y_checksum       CHECKSUM("tower_offset_y")
+#define tower_offset_x_checksum      CHECKSUM("tower_offset_x")
+#define tower_offset_y_checksum      CHECKSUM("tower_offset_y")
 #define axis_scaling_x_checksum      CHECKSUM("axis_scaling_x")
 #define axis_scaling_y_checksum      CHECKSUM("axis_scaling_y")
 #define polar_homing_checksum        CHECKSUM("polar_homing")
